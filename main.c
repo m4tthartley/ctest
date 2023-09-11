@@ -9,6 +9,7 @@
 #include "list.c"
 #include "arrays.c"
 #include "memory.c"
+#include "strings.c"
 
 void vectors() {
 	vec3 vec1 = {1, 2, 3};
@@ -113,7 +114,8 @@ int main() {
 	// printf("page size %i \n", pageSize);
 
 	// lists();
-	memory();
+	// memory();
+	strings();
 
 	putchar('\n');
 }
