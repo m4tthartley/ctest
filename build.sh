@@ -5,11 +5,10 @@ pushd build > /dev/null
 gcc ../main.c -o output.exe -g -Wno-incompatible-pointer-types
 
 result=$?
+
+popd > /dev/null
+
 if [ $result -eq 0 ]; then
-	./output.exe
+	./build/output.exe
 fi
 exit $result
-
-# popd > /dev/null
-
-# ./build/output.exe

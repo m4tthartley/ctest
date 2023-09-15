@@ -1,17 +1,77 @@
-
-void print_arena(memory_arena* arena) {
-	for(int i=0; i<(arena->flags&ARENA_RESERVE?arena->commit:arena->size); ++i) {
-		if(arena->address[i]) {
-			if(arena->address[i] == '\n') {
+void print_memory_block(memory_block* block) {
+	for(int i=0; i< block->size-sizeof(memory_block); ++i) {
+		char c = *((u8*)(block+1) + i);
+		if(c) {
+			if(c == '\n') {
 				printf("\\n");
 			} else {
-				printf("%c", arena->address[i]);
+				printf("%c", c);
 			}
 		} else {
 			printf("_");
 		}
-		// fwrite(buffer+i, 1, 1, stdout);
 	}
+}
+
+void print_arena(memory_arena* arena) {
+	// for(int i=0; i<(arena->flags&ARENA_RESERVE?arena->commit:arena->size); ++i) {
+	// 	if(arena->address[i]) {
+	// 		if(arena->address[i] == '\n') {
+	// 			printf("\\n");
+	// 		} else {
+	// 			printf("%c", arena->address[i]);
+	// 		}
+	// 	} else {
+	// 		printf("_");
+	// 	}
+	// }
+	// putchar('\n');
+
+	u64 index = 0;
+	u64 arenaSize = arena->flags&ARENA_RESERVE ? arena->commit : arena->size;
+	while(index < arenaSize) {
+		memory_block* b = arena->blocks.first;
+		while(b) {
+			if(arena->address+index == b) {
+				escape_code(RESET INVERTED);
+				char size[32];
+				snprintf(size, sizeof(size), "block %li", b->size);
+				printf(size);
+				for(int i=0; i<sizeof(memory_block)-s_len(size); ++i) {
+					printf(" ");
+				}
+				escape_code(RESET BLUB);
+				print_memory_block(b);
+				index += b->size;
+				goto next;
+			}
+			b = ((list_node*)b)->next;
+		}
+
+		memory_block* f = arena->free.first;
+		while(f) {
+			if(arena->address+index == f) {
+				escape_code(RESET INVERTED);
+				char size[32];
+				snprintf(size, sizeof(size), "free %li", f->size);
+				printf(size);
+				for(int i=0; i<sizeof(memory_block)-s_len(size); ++i) {
+					printf(" ");
+				}
+				escape_code(RESET GRNB);
+				print_memory_block(f);
+				index += f->size;
+				goto next;
+			}
+			f = ((list_node*)f)->next;
+		}
+
+		printf(REDB "FATAL ERROR");
+		exit(1);
+next:
+	}
+
+	escape_code(RESET);
 	putchar('\n');
 }
 
@@ -41,23 +101,6 @@ void print_freelist(memory_arena* arena) {
 }
 
 void memory() {
-	FILE* file = fopen("../africa.txt", "r");
-	if(!file) {
-		printf("cant open file\n");
-		file = fopen("africa.txt", "r");
-		if(!file) {
-			printf("cant open file\n");
-			return;
-		}
-	}
-	fseek(file, 0, SEEK_END);
-	int size = ftell(file);
-	char* africa = malloc(size+1);
-	memset(africa, 0, size+1);
-	rewind(file);
-	fread(africa, 1, size, file);
-	fclose(file);
-
 	u8 buffer[PAGE_SIZE] = {0};
 	memory_arena stack;
 	m_stack(&stack, buffer, sizeof(buffer));

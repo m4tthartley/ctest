@@ -5,6 +5,10 @@
 
 #include "math.c"
 #include "../core/core.h"
+#include "../core/terminal.h"
+
+char* africa = NULL;
+char* africa_short = NULL;
 
 #include "list.c"
 #include "arrays.c"
@@ -41,6 +45,34 @@ void hashing() {
 }
 
 int main() {
+	{
+		FILE* file = fopen("africa.txt", "r");
+		if(!file) {
+			printf("cant open file\n");
+		}
+		fseek(file, 0, SEEK_END);
+		int size = ftell(file);
+		africa = malloc(size+1);
+		memset(africa, 0, size+1);
+		rewind(file);
+		fread(africa, 1, size, file);
+		fclose(file);
+	}
+
+	{
+		FILE* file = fopen("africa_short.txt", "r");
+		if(!file) {
+			printf("cant open file\n");
+		}
+		fseek(file, 0, SEEK_END);
+		int size = ftell(file);
+		africa_short = malloc(size+1);
+		memset(africa_short, 0, size+1);
+		rewind(file);
+		fread(africa_short, 1, size, file);
+		fclose(file);
+	}
+
 #if 0
 	typedef enum {
 		ARENA_STATIC,
