@@ -32,7 +32,7 @@ void print_arena(memory_arena* arena) {
 	while(index < arenaSize) {
 		memory_block* b = arena->blocks.first;
 		while(b) {
-			if(arena->address+index == b) {
+			if(arena->address+index == (void*)b) {
 				escape_code(RESET INVERTED);
 				char size[32];
 				snprintf(size, sizeof(size), "block %li", b->size);
@@ -50,7 +50,7 @@ void print_arena(memory_arena* arena) {
 
 		memory_block* f = arena->free.first;
 		while(f) {
-			if(arena->address+index == f) {
+			if(arena->address+index == (void*)f) {
 				escape_code(RESET INVERTED);
 				char size[32];
 				snprintf(size, sizeof(size), "free %li", f->size);

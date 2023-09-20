@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "math.c"
-#include "../core/core.h"
-#include "../core/terminal.h"
+#include <core.h>
+#include <terminal.h>
 
 char* africa = NULL;
 char* africa_short = NULL;
@@ -14,11 +13,12 @@ char* africa_short = NULL;
 #include "arrays.c"
 #include "memory.c"
 #include "strings.c"
+#include "game.c"
 
 void vectors() {
-	vec3 vec1 = {1, 2, 3};
-	vec3 vec2 = {4, 5, 6};
-	sumVec3(vec1, vec2);
+	// vec3 vec1 = {1, 2, 3};
+	// vec3 vec2 = {4, 5, 6};
+	// sumVec3(vec1, vec2);
 }
 
 void inPlaceSwap() {
@@ -147,7 +147,8 @@ int main() {
 
 	// lists();
 	// memory();
-	strings();
+	// strings();
+	game();
 
 	putchar('\n');
 }
