@@ -29,7 +29,7 @@ void game() {
 
 	// core_window_t window = core_window(name, 800, 600, CORE_CENTERED);
 	core_window_t window;
-	core_window(&window, name, 800, 600, 0);
+	core_window(&window, name, 800, 600, WINDOW_CENTERED);
 	printf("opengl start \n");
 	core_opengl(&window);
 	printf("opengl done \n");
@@ -42,6 +42,21 @@ void game() {
 	// gfx_texture_t texture2 = gfx_create_null_texture(256, 256);
 	gfx_texture_t texture2 = gfx_create_texture(bitmap);
 	// gfx_texture_t texture2 = gfx_create_texture(bitmap->data, bitmap->width, bitmap->height);
+
+	wave_t* sound1 = f_load_wave(&assets, "star_wars.wav");
+	wave_t* sound2 = f_load_wave(&assets, "example.wav");
+	wave_t* sound3 = f_load_wave(&assets, "cantina_band.wav");
+	wave_t* sound4 = f_load_wave(&assets, "dunkadunka.wav");
+	wave_t* sound5 = f_load_wave(&assets, "dunkadunka22050.wav");
+	wave_t* sound6 = f_load_wave(&assets, "dunkadunka8000.wav");
+	wave_t* sound7 = f_load_wave(&assets, "dunkadunka8000mono.wav");
+	wave_t* sound8 = f_load_wave(&assets, "dunkadunka22050mono.wav");
+
+	wave_t* sound9 = f_load_wave(&assets, "examplesmall.wav");
+
+	core_init_audio(CORE_DEFAULT_AUDIO_MIXER_PROC, 0);
+	core_play_sound(sound9, 0.1f);
+	core_play_sound(sound4, 0.1f);
 
 	u8 block_buffer[PAGE_SIZE*2];
 	// m_arena block_arena;
@@ -95,7 +110,7 @@ void game() {
 		gfx_quad(vec3(0, 0, 0), vec2(1, 1));
 
 		gfx_color(vec4(1, 1, 1, 1));
-		gfx_texture(test_tex);
+		gfx_texture(&test_tex);
 		gfx_sprite(vec2(5, 5), 0, 0, 128, 128, 2);
 		gfx_sprite(vec2(5, -5), 0, 0, 64, 64, 4);
 		// gfx_quad(vec3(5, 5, 0), vec2(1, 1));
