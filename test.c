@@ -1,8 +1,4 @@
 
-#include <stdio.h>
-
-int main() {
-	printf("Hello World");
-	fwrite(stdout, "its not working")
-	fwrite()
-}
+// #include "test_window.c"
+// #include "test_timer.c"
+#include "test_audio.c"

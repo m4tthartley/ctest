@@ -4,6 +4,7 @@
 #include <file.h>
 
 // TODO window resizing option
+// TODO window fullscreen option
 
 float sprite_frame = 0.0f;
 float timer = 0.0f;
